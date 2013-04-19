@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace Microsoft.Xna.Framework.Utilities
 {
-    internal static class Helper_Reflection
+    internal static class ReflectionHelpers
     {
 #if WINRT
         internal static char notSeparator = '/';

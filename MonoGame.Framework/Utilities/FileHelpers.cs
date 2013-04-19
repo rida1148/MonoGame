@@ -16,7 +16,7 @@ using System.IO.IsolatedStorage;
 
 namespace Microsoft.Xna.Framework.Utilities
 {
-    public static class Helper_File
+    public static class FileHelpers
     {
         #region internal properties
 #if WINDOWS_PHONE
