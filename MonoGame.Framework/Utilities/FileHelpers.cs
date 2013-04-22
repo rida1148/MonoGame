@@ -10,13 +10,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Search;
-#elif WINDOWS_PHONE
+#endif
+#if WINDOWS_PHONE
 using System.IO.IsolatedStorage;
 #endif
 
 namespace Microsoft.Xna.Framework.Utilities
 {
-    public static class FileHelpers
+    internal static class FileHelpers
     {
         #region internal properties
 #if WINDOWS_PHONE
@@ -32,7 +33,7 @@ namespace Microsoft.Xna.Framework.Utilities
 
         #region File Handlers
 
-        internal static Stream FileOpen(string filePath, string fileMode, string fileAccess, string fileShare)
+        public static Stream FileOpen(string filePath, string fileMode, string fileAccess, string fileShare)
         {
             return FileOpen(filePath, (FileMode)Enum.Parse(typeof(FileMode), fileMode, true), (FileAccess)Enum.Parse(typeof(FileAccess), fileAccess, false), (FileShare)Enum.Parse(typeof(FileShare), fileShare, false));
         }
@@ -73,10 +74,10 @@ namespace Microsoft.Xna.Framework.Utilities
 #endif
         }
 
-        internal static Stream FileOpenRead(string Location, string safeName)
+        public static Stream FileOpenRead(string Location, string safeName)
         {
 #if WINRT
-            var stream = Task.Run( () => Helper_File.OpenStreamAsync(safeName).Result ).Result;
+            var stream = Task.Run( () => FileHelpers.OpenStreamAsync(safeName).Result ).Result;
             if (stream == null)
                 throw new FileNotFoundException(safeName);
 
@@ -104,19 +105,7 @@ namespace Microsoft.Xna.Framework.Utilities
 #endif
         }
 
-        internal static string GetFilename(string name)
-        {
-#if WINRT
-            // Replace non-windows seperators.
-            name = name.Replace('/', '\\');
-#else
-            // Replace Windows path separators with local path separators
-            name = name.Replace('\\', Path.DirectorySeparatorChar);
-#endif
-            return name;
-        }
-
-        internal static bool FileExists(string fileName)
+        public static bool FileExists(string fileName)
         {
 #if WINRT
             var result = Task.Run(async () =>
@@ -162,7 +151,7 @@ namespace Microsoft.Xna.Framework.Utilities
             return false;
         }
 
-        internal static Stream FileCreate(string filePath)
+        public static Stream FileCreate(string filePath)
         {
 #if WINDOWS_STOREAPP
             var folder = ApplicationData.Current.LocalFolder;
@@ -176,7 +165,7 @@ namespace Microsoft.Xna.Framework.Utilities
 #endif
         }
 
-        internal static void FileDelete(string filePath)
+        public static void FileDelete(string filePath)
         {
 #if WINDOWS_STOREAPP
             var folder = ApplicationData.Current.LocalFolder;
@@ -190,7 +179,7 @@ namespace Microsoft.Xna.Framework.Utilities
 #endif
         }
 
-        internal static string NormalizeFilename(string fileName, string[] extensions)
+        public static string NormalizeFilename(string fileName, string[] extensions)
         {
 
             if (FileExists(fileName))
@@ -212,30 +201,24 @@ namespace Microsoft.Xna.Framework.Utilities
             return null;
         }
 
+        // Renamed from - public static string GetFilename(string name)
+        public static string NormalizeFilePathSeperators(string name)
+        {
+#if WINRT
+            // Replace non-windows seperators.
+            name = name.Replace('/', '\\');
+#else
+            // Replace Windows path separators with local path separators
+            name = name.Replace('\\', Path.DirectorySeparatorChar);
+#endif
+            return name;
+        }
+
+
 
         #region File Handler reciprocal overloads
 
-        internal static void FileOpenRead(string Location, string safeName, out Stream fileStream)
-        {
-            fileStream = FileOpenRead(Location, safeName);
-        }
-
-        internal static void FileOpenRead(object storageFile, string Location, string safeName, out Stream fileStream)
-        {
-            if (storageFile == null)
-            {
-                throw new NullReferenceException("Must supply a storageFile reference");
-            }
-
-#if WINDOWS_PHONE
-            storage = (IsolatedStorageFile)storageFile;
-#endif
-
-            fileStream = FileOpenRead(Location, safeName);
-
-        }
-
-        internal static Stream FileOpenRead(object storageFile, string Location, string safeName)
+        public static Stream FileOpenRead(object storageFile, string Location, string safeName)
         {
             if (storageFile == null)
             {
@@ -250,7 +233,7 @@ namespace Microsoft.Xna.Framework.Utilities
 
         }
 
-        internal static bool FileExists(object storageFile, string fileName)
+        public static bool FileExists(object storageFile, string fileName)
         {
             if (storageFile == null)
             {
@@ -264,7 +247,7 @@ namespace Microsoft.Xna.Framework.Utilities
             return FileExists(fileName);
         }
 
-        internal static Stream FileCreate(object storageFile, string filePath)
+        public static Stream FileCreate(object storageFile, string filePath)
         {
             if (storageFile == null)
             {
@@ -278,26 +261,7 @@ namespace Microsoft.Xna.Framework.Utilities
             return FileCreate(filePath);
         }
 
-        internal static void FileCreate(string filePath, out Stream fileStream)
-        {
-            fileStream = FileCreate(filePath);
-        }
-
-        internal static void FileCreate(object storageFile, string filePath, out Stream fileStream)
-        {
-            if (storageFile == null)
-            {
-                throw new NullReferenceException("Must supply a storageFile reference");
-            }
-
-#if WINDOWS_PHONE
-            storage = (IsolatedStorageFile)storageFile;
-#endif
-
-            fileStream = FileCreate(filePath);
-        }
-
-        internal static void FileDelete(object storageFile, string filePath)
+        public static void FileDelete(object storageFile, string filePath)
         {
             if (storageFile == null)
             {
@@ -317,7 +281,28 @@ namespace Microsoft.Xna.Framework.Utilities
 
         #region Directory Handlers
 
-        internal static string[] DirectoryGetFiles(string storagePath)
+        public static bool DirectoryExists(string dirPath)
+        {
+#if WINDOWS_STOREAPP
+            var folder = ApplicationData.Current.LocalFolder;
+
+            try
+            {
+                var result = folder.GetFolderAsync(dirPath).GetResults();
+                return result != null;
+            }
+            catch
+            {
+                return false;
+            }
+#elif WINDOWS_PHONE
+            return storage.DirectoryExists(dirPath);
+#else
+            return Directory.Exists(dirPath);
+#endif
+        }
+
+        public static string[] DirectoryGetFiles(string storagePath)
         {
 #if WINDOWS_STOREAPP
             var folder = ApplicationData.Current.LocalFolder;
@@ -338,7 +323,7 @@ namespace Microsoft.Xna.Framework.Utilities
 #endif
         }
 
-        internal static string[] DirectoryGetFiles(string storagePath, string searchPattern)
+        public static string[] DirectoryGetFiles(string storagePath, string searchPattern)
         {
             if (string.IsNullOrEmpty(searchPattern))
                 throw new ArgumentNullException("Parameter searchPattern must contain a value.");
@@ -354,28 +339,7 @@ namespace Microsoft.Xna.Framework.Utilities
 #endif
         }
 
-        internal static bool DirectoryExists(string dirPath)
-        {
-#if WINDOWS_STOREAPP
-            var folder = ApplicationData.Current.LocalFolder;
-
-            try
-            {
-                var result = folder.GetFolderAsync(dirPath).GetResults();
-            return result != null;
-            }
-            catch
-            {
-                return false;
-            }
-#elif WINDOWS_PHONE
-            return storage.DirectoryExists(dirPath);
-#else
-            return Directory.Exists(dirPath);
-#endif
-        }
-
-        internal static string[] DirectoryGetDirectories(string storagePath)
+        public static string[] DirectoryGetDirectories(string storagePath)
         {
 #if WINDOWS_STOREAPP
             var folder = ApplicationData.Current.LocalFolder;
@@ -386,12 +350,12 @@ namespace Microsoft.Xna.Framework.Utilities
 #endif
         }
 
-        internal static string[] DirectoryGetDirectories(string storagePath, string searchPattern)
+        public static string[] DirectoryGetDirectories(string storagePath, string searchPattern)
         {
             throw new NotImplementedException();
         }
 
-        internal static void DirectoryCreate(string directory)
+        public static void DirectoryCreate(string directory)
         {
             if (string.IsNullOrEmpty(directory))
                 throw new ArgumentNullException("Parameter directory must contain a value.");
@@ -410,7 +374,7 @@ namespace Microsoft.Xna.Framework.Utilities
         /// Creates a new directory in the storage-container.
         /// </summary>
         /// <param name="directory">Relative path of the directory to be created.</param>
-        internal static void DirectoryCreate(string directory, string storagePath)
+        public static void DirectoryCreate(string directory, string storagePath)
         {
             if (string.IsNullOrEmpty(directory))
                 throw new ArgumentNullException("Parameter directory must contain a value.");
@@ -421,7 +385,7 @@ namespace Microsoft.Xna.Framework.Utilities
             DirectoryCreate(dirPath);
         }
 
-        internal static void DirectoryDelete(string dirPath)
+        public static void DirectoryDelete(string dirPath)
         {
 #if WINDOWS_STOREAPP
             var folder = ApplicationData.Current.LocalFolder;
@@ -434,7 +398,7 @@ namespace Microsoft.Xna.Framework.Utilities
 
         #region Directory Handler reciprocal overloads
 
-        internal static string[] DirectoryGetFiles(object storageFile, string storagePath)
+        public static string[] DirectoryGetFiles(object storageFile, string storagePath)
         {
             if (storageFile == null)
             {
@@ -448,26 +412,7 @@ namespace Microsoft.Xna.Framework.Utilities
             return DirectoryGetFiles(storagePath);
         }
 
-        internal static void DirectoryGetFiles(string storagePath, out string[] files)
-        {
-            files = DirectoryGetFiles(storagePath);
-        }
-
-        internal static void DirectoryGetFiles(object storageFile, string storagePath, out string[] files)
-        {
-            if (storageFile == null)
-            {
-                throw new NullReferenceException("Must supply a storageFile reference");
-            }
-
-#if WINDOWS_PHONE
-            storage = (IsolatedStorageFile)storageFile;
-#endif
-
-            DirectoryGetFiles(storagePath, out files);
-        }
-
-        internal static bool DirectoryExists(string dirPath, out object storageFile)
+        public static bool DirectoryExists(string dirPath, out object storageFile)
         {
 
 #if WINDOWS_PHONE
@@ -489,7 +434,7 @@ namespace Microsoft.Xna.Framework.Utilities
 
         #region Stream Handlers
 
-        internal static Stream OpenStream(string rootDirectory, string assetName, string extension)
+        public static Stream OpenStream(string rootDirectory, string assetName, string extension)
         {
             Stream stream;
             try
@@ -519,7 +464,7 @@ namespace Microsoft.Xna.Framework.Utilities
             return stream;
         }
 
-        internal static Stream SeekStreamtoStart(Stream stream, long StartPos, out long pos)
+        public static Stream SeekStreamtoStart(Stream stream, long StartPos, out long pos)
         {
 #if ANDROID
                 // Android native stream does not support the Position property. LzxDecoder.Decompress also uses
@@ -538,7 +483,7 @@ namespace Microsoft.Xna.Framework.Utilities
                 return stream;
         }
 
-        internal static void StreamClose(Stream stream)
+        public static void StreamClose(Stream stream)
         {
 #if !WINRT
             stream.Close();
@@ -568,13 +513,13 @@ namespace Microsoft.Xna.Framework.Utilities
 
         #region Stream Handler reciprocal overloads
 
-        internal static Stream SeekStreamtoStart(Stream stream)
+        public static Stream SeekStreamtoStart(Stream stream)
         {
             long StartPos = stream.Position;
             return SeekStreamtoStart(stream, StartPos, out StartPos);
         }
 
-        internal static Stream SeekStreamtoStart(Stream stream, long StartPos)
+        public static Stream SeekStreamtoStart(Stream stream, long StartPos)
         {
             return SeekStreamtoStart(stream, StartPos, out StartPos);
         }
