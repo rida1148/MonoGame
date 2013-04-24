@@ -142,7 +142,7 @@ namespace Microsoft.Xna.Framework.Utilities
             if (files.Any(s => s.ToLower() == file.ToLower()))
                 return true;
 #elif WINDOWS_PHONE
-            if(FileExists(storage, fileName))
+            if(storage.FileExists(fileName))
                 return true;
 #else
             if (File.Exists(fileName))
