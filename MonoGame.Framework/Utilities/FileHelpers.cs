@@ -31,6 +31,17 @@ namespace Microsoft.Xna.Framework.Utilities
 #endif
         #endregion
 
+        #region public properties
+		
+		#if WINRT
+        public static char notSeparator = '/';
+        public static char separator = '\\';
+#else
+        public static char notSeparator = '\\';
+        public static char separator = Path.DirectorySeparatorChar;
+#endif
+        #endregion
+
         #region File Handlers
 
         public static Stream FileOpen(string filePath, string fileMode, string fileAccess, string fileShare)
@@ -394,6 +405,24 @@ namespace Microsoft.Xna.Framework.Utilities
 #else
             Directory.Delete(dirPath);
 #endif
+        }
+		
+        public static string GetInstallPath()
+        {
+			string Location = string.Empty;
+		//Get Install Path 
+#if WINDOWS || LINUX
+            Location = AppDomain.CurrentDomain.BaseDirectory;
+#elif WINRT
+            Location = Windows.ApplicationModel.Package.Current.InstalledLocation.Path;
+#elif IOS || MONOMAC
+			Location = NSBundle.MainBundle.ResourcePath;
+#elif PSM
+			Location = "/Application";
+#else
+            Location = string.Empty;
+#endif
+            return Location;
         }
 
         #region Directory Handler reciprocal overloads

@@ -10,14 +10,6 @@ namespace Microsoft.Xna.Framework.Utilities
 {
     internal static class ReflectionHelpers
     {
-#if WINRT
-        public static char notSeparator = '/';
-        public static char separator = '\\';
-#else
-        public static char notSeparator = '\\';
-        public static char separator = Path.DirectorySeparatorChar;
-#endif
-
         public static bool IsValueType(Type targetType)
         {
             if (targetType == null)
@@ -126,6 +118,22 @@ namespace Microsoft.Xna.Framework.Utilities
                 if (info.IsPublic == false)
                     return true;
             }
+#endif
+            return false;
+        }
+		
+        public static bool IsAssignableFrom(Type type, object provider)
+        {
+			if (type == null)
+                throw new ArgumentNullException("type");
+            if (provider == null)
+                throw new ArgumentNullException("provider");
+#if WINRT
+            if (type.GetTypeInfo().IsAssignableFrom(provider.GetType().GetTypeInfo()))
+				return true;
+#else
+            if (type.IsAssignableFrom(provider.GetType()))
+				return true;
 #endif
             return false;
         }
