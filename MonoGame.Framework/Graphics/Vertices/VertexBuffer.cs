@@ -349,7 +349,7 @@ namespace Microsoft.Xna.Framework.Graphics
 
 #elif PSM
             if (_vertexArray == null)
-                _vertexArray = new T[VertexCount];
+                _vertexArray = new T[bufferSize];
             Array.Copy(data, offsetInBytes / vertexStride, _vertexArray, startIndex, elementCount);
 #else
 

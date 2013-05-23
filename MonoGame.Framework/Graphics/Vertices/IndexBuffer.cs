@@ -84,7 +84,7 @@ namespace Microsoft.Xna.Framework.Graphics
 #elif PSM
             if (indexElementSize != IndexElementSize.SixteenBits)
                 throw new NotImplementedException("PSS Currently only supports ushort (SixteenBits) index elements");
-            _buffer = new ushort[indexCount];
+            _buffer = new ushort[sizeInBytes];
 #else
             Threading.BlockOnUIThread(GenerateIfRequired);
 #endif
@@ -334,7 +334,7 @@ namespace Microsoft.Xna.Framework.Graphics
             }
 
 #elif PSM
-            if (typeof(T) == typeof(ushort))
+            if (typeof(T) != typeof(ushort))
             {
                 Array.Copy(data, offsetInBytes / sizeof(ushort), _buffer, startIndex, elementCount);
             }

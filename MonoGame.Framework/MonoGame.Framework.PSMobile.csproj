@@ -387,6 +387,8 @@
     <Compile Include="GamerServices\LeaderboardWriter.cs" />
     <Compile Include="GamerServices\PropertyDictionary.cs" />
     <Compile Include="GameUpdateRequiredException.cs" />
+    <Compile Include="Content\ContentReaders\VertexDeclarationReader.cs" />
+    <Compile Include="Content\ContentReaders\ModelReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="PSSuite\" />
