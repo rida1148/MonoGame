@@ -16,6 +16,8 @@ namespace Microsoft.Xna.Framework.Graphics.PackedVector
             public float f;
             [FieldOffset(0)]
             public int i;
+            [FieldOffset(0)]
+            public uint u;
         }
 
         internal static UInt16 Convert(float f)
@@ -78,11 +80,8 @@ namespace Microsoft.Xna.Framework.Graphics.PackedVector
                 return (UInt16)(s | (e << 10) | (m >> 13));
             }
         }
-#if PORTABLE
+
         internal static float Convert(ushort value)
-#else
-        internal static unsafe float Convert(ushort value)
-#endif
         {
             uint rst;
             uint mantissa = (uint)(value & 1023);
@@ -110,11 +109,9 @@ namespace Microsoft.Xna.Framework.Graphics.PackedVector
                 rst = (uint)(((((uint)value & 0x8000) << 16) | ((((((uint)value >> 10) & 0x1f) - 15) + 127) << 23)) | (mantissa << 13));
             }
 
-#if PORTABLE
-            return 0;
-#else
-            return *(((float*)&rst));
-#endif
+            var uif = new uif();
+            uif.u = rst;
+            return uif.f;
         }
     }
 }

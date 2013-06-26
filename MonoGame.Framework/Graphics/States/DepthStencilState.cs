@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 #if OPENGL
 #if MONOMAC
@@ -68,31 +69,43 @@ namespace Microsoft.Xna.Framework.Graphics
 			StencilWriteMask = Int32.MaxValue;
 			ReferenceStencil = 0;
 		}
-		
-		public static readonly DepthStencilState Default;
-		public static readonly DepthStencilState DepthRead;
-		public static readonly DepthStencilState None;
+
+#if !PORTABLE
+        private static readonly Utilities.ObjectFactoryWithReset<DepthStencilState> _default;
+        private static readonly Utilities.ObjectFactoryWithReset<DepthStencilState> _depthRead;
+        private static readonly Utilities.ObjectFactoryWithReset<DepthStencilState> _none;
+
+        public static DepthStencilState Default { get { return _default.Value; } }
+        public static DepthStencilState DepthRead { get { return _depthRead.Value; } }
+        public static DepthStencilState None { get { return _none.Value; } }
+#else
+        public static DepthStencilState Default { get { return null; } }
+        public static DepthStencilState DepthRead { get { return null; } }
+        public static DepthStencilState None { get { return null; } }
+#endif
 		
 		static DepthStencilState ()
 		{
-			Default = new DepthStencilState () 
+#if !PORTABLE
+			_default = new Utilities.ObjectFactoryWithReset<DepthStencilState>(() => new DepthStencilState
             {
 				DepthBufferEnable = true,
 				DepthBufferWriteEnable = true
-			};
+			});
 			
-			DepthRead = new DepthStencilState () 
+			_depthRead = new Utilities.ObjectFactoryWithReset<DepthStencilState>(() => new DepthStencilState
             {
 				DepthBufferEnable = true,
 				DepthBufferWriteEnable = false
-			};
+			});
 			
-			None = new DepthStencilState () 
+			_none = new Utilities.ObjectFactoryWithReset<DepthStencilState>(() => new DepthStencilState
             {
 				DepthBufferEnable = false,
 				DepthBufferWriteEnable = false
-			};
-		}
+			});
+#endif
+        }
 
 #if OPENGL
 
@@ -254,6 +267,12 @@ namespace Microsoft.Xna.Framework.Graphics
 
 #elif DIRECTX
 
+        protected internal override void GraphicsDeviceResetting()
+        {
+            SharpDX.Utilities.Dispose(ref _state);
+            base.GraphicsDeviceResetting();
+        }
+
         internal void ApplyState(GraphicsDevice device)
         {
             if (_state == null)
@@ -309,6 +328,13 @@ namespace Microsoft.Xna.Framework.Graphics
             // Apply the state!
             device._d3dContext.OutputMerger.DepthStencilReference = ReferenceStencil;
             device._d3dContext.OutputMerger.DepthStencilState = _state;
+        }
+
+        internal static void ResetStates()
+        {
+            _default.Reset();
+            _depthRead.Reset();
+            _none.Reset();
         }
 
         static private SharpDX.Direct3D11.Comparison GetComparison( CompareFunction compare)
@@ -382,9 +408,47 @@ namespace Microsoft.Xna.Framework.Graphics
         { }
 #endif // DIRECTX
 #if PSM
+        static readonly Dictionary<CompareFunction, DepthFuncMode> MapDepthCompareFunction = new Dictionary<CompareFunction, DepthFuncMode> {
+            { CompareFunction.Always,        DepthFuncMode.Always    },
+            { CompareFunction.Equal,         DepthFuncMode.Equal     },
+            { CompareFunction.GreaterEqual,  DepthFuncMode.GEqual    },
+            { CompareFunction.Greater,       DepthFuncMode.Greater   },
+            { CompareFunction.LessEqual,     DepthFuncMode.LEqual    },
+            { CompareFunction.Less,          DepthFuncMode.Less      },
+            { CompareFunction.NotEqual,      DepthFuncMode.NotEequal },
+            { CompareFunction.Never,         DepthFuncMode.Never     },
+        };
+        
+        static readonly Dictionary<CompareFunction, StencilFuncMode> MapStencilCompareFunction = new Dictionary<CompareFunction, StencilFuncMode> {
+            { CompareFunction.Always,        StencilFuncMode.Always    },
+            { CompareFunction.Equal,         StencilFuncMode.Equal     },
+            { CompareFunction.GreaterEqual,  StencilFuncMode.GEqual    },
+            { CompareFunction.Greater,       StencilFuncMode.Greater   },
+            { CompareFunction.LessEqual,     StencilFuncMode.LEqual    },
+            { CompareFunction.Less,          StencilFuncMode.Less      },
+            { CompareFunction.NotEqual,      StencilFuncMode.NotEequal },
+            { CompareFunction.Never,         StencilFuncMode.Never     },
+        };
+        
         internal void ApplyState(GraphicsDevice device)
         {
-            #warning Unimplemented
+            var g = device.Context;
+            
+            // FIXME: More advanced stencil attributes
+            
+            g.SetDepthFunc(
+                MapDepthCompareFunction[DepthBufferFunction],
+                DepthBufferWriteEnable
+            );
+            
+            g.Enable(EnableMode.DepthTest, DepthBufferEnable);
+            
+            g.SetStencilFunc(
+                MapStencilCompareFunction[StencilFunction],
+                ReferenceStencil, StencilMask, StencilWriteMask
+            );
+            
+            g.Enable(EnableMode.StencilTest, StencilEnable);
         }
 #endif
 	}
