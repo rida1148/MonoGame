@@ -401,6 +401,7 @@
     <Compile Include="Threading.cs" />
     <Compile Include="TitleContainer.cs" />
     <Compile Include="Utilities\Hash.cs" />
+    <Compile Include="Utilities\ObjectFactoryWithReset.cs" />
     <Compile Include="Vector2.cs" />
     <Compile Include="Vector3.cs" />
     <Compile Include="Vector4.cs" />
