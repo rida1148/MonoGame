@@ -80,7 +80,6 @@ namespace Microsoft.Xna.Framework.Graphics
 		public ColorWriteChannels ColorWriteChannels2 { get; set; }
 		public ColorWriteChannels ColorWriteChannels3 { get; set; }
 		public int MultiSampleMask { get; set; }
-#if !PORTABLE
 		private static readonly Utilities.ObjectFactoryWithReset<BlendState> _additive;
         private static readonly Utilities.ObjectFactoryWithReset<BlendState> _alphaBlend;
         private static readonly Utilities.ObjectFactoryWithReset<BlendState> _nonPremultiplied;
@@ -90,12 +89,7 @@ namespace Microsoft.Xna.Framework.Graphics
         public static BlendState AlphaBlend { get { return _alphaBlend.Value; } }
         public static BlendState NonPremultiplied { get { return _nonPremultiplied.Value; } }
         public static BlendState Opaque { get { return _opaque.Value; } }
-#else
-        public static BlendState Additive { get { return null; } }
-        public static BlendState AlphaBlend { get { return null; } }
-        public static BlendState NonPremultiplied { get { return null; } }
-        public static BlendState Opaque { get { return null; } }
-#endif
+
 
         public BlendState() 
         {

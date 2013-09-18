@@ -3,6 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.Portable", "MonoGame.Framework\MonoGame.Framework.Portable.csproj", "{D0F9C1B4-9E45-4C50-88FC-A071E8AF6A94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.NuGetPackager", "MonoGame.NuGetPackager\MonoGame.NuGetPackager.csproj", "{0451BAEF-DF2E-4B98-8644-94EE9415E389}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{92F25800-1543-4DCF-A8F1-5EE98B5EA6DD}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,10 +22,10 @@ Global
 		{D0F9C1B4-9E45-4C50-88FC-A071E8AF6A94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0F9C1B4-9E45-4C50-88FC-A071E8AF6A94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0F9C1B4-9E45-4C50-88FC-A071E8AF6A94}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AEA9E92A-C99E-4161-8D54-7AC1AE4B3601}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AEA9E92A-C99E-4161-8D54-7AC1AE4B3601}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AEA9E92A-C99E-4161-8D54-7AC1AE4B3601}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AEA9E92A-C99E-4161-8D54-7AC1AE4B3601}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -269,11 +269,11 @@ Write-Log "Creating package..." -ForegroundColor Green
 
 # Create symbols package if any .pdb files are located in the lib folder
 If ((Get-ChildItem *.pdb -Path .\lib -Recurse).Count -gt 0) {
-    Write-Log (Invoke-Command {.\NuGet.exe pack Package.nuspec -Symbol -Verbosity Detailed 2>&1})
+    Write-Log (Invoke-Command {.\NuGet.exe pack Package.Portable.nuspec -Symbol -Verbosity Detailed 2>&1})
     $ExitCode = $LASTEXITCODE
 }
 Else {
-    Write-Log (Invoke-Command {.\NuGet.exe pack Package.nuspec -Verbosity Detailed 2>&1})
+    Write-Log (Invoke-Command {.\NuGet.exe pack Package.Portable.nuspec -Verbosity Detailed 2>&1})
     $ExitCode = $LASTEXITCODE
 }
 
