@@ -369,7 +369,7 @@ namespace Microsoft.Xna.Framework.Storage
 			return new StorageDevice (null, sizeInBytes, directoryCount);
 		}
 		
-		
+		/*
 		//
 		//
 		// Parameters:
@@ -378,8 +378,9 @@ namespace Microsoft.Xna.Framework.Storage
 		public void DeleteContainer (string titleName)
 		{
 			throw new NotImplementedException ();
-
 		}			
+        */
+
 		//
 		// Summary:
 		//     Ends the process for opening a StorageContainer.

@@ -428,6 +428,7 @@ namespace Microsoft.Xna.Framework.Net
 			}
 		}
 
+        /*
 		public static IAsyncResult BeginJoinInvited (
 			IEnumerable<SignedInGamer> localGamers,
 			AsyncCallback callback,
@@ -453,8 +454,9 @@ namespace Microsoft.Xna.Framework.Net
 			} finally {
 			}
 		}
+        */
 
-		public static NetworkSession EndCreate (IAsyncResult result)
+        public static NetworkSession EndCreate (IAsyncResult result)
 		{
 			NetworkSession returnValue = null;
 #if !PORTABLE
@@ -557,6 +559,7 @@ namespace Microsoft.Xna.Framework.Net
 			return returnValue;
 		}
 
+        /*
 		public static NetworkSession EndJoinInvited (IAsyncResult result)
 		{
 			NetworkSession returnValue = null;
@@ -583,6 +586,7 @@ namespace Microsoft.Xna.Framework.Net
 #endif
 			return returnValue;
 		}
+        */
 
 		public static AvailableNetworkSessionCollection Find (
 			NetworkSessionType sessionType,
@@ -669,6 +673,7 @@ namespace Microsoft.Xna.Framework.Net
 			return session;		
 		}
 		
+        /*
 		public static NetworkSession JoinInvited (IEnumerable<SignedInGamer> localGamers)
 		{
 			try {
@@ -676,7 +681,7 @@ namespace Microsoft.Xna.Framework.Net
 			} finally {
 			}
 		}
-
+        
 		public static NetworkSession JoinInvited (int maxLocalGamers)
 		{
 			if (maxLocalGamers < 1 || maxLocalGamers > 4)
@@ -687,7 +692,8 @@ namespace Microsoft.Xna.Framework.Net
 			} finally {
 			}
 		}
-		
+		*/
+
 		// I am not really sure how this is suppose to work so am just fleshing it in
 		//  for the way I think it should.  This will also send a message to all connected
 		//  peers for a state change.
@@ -968,6 +974,7 @@ namespace Microsoft.Xna.Framework.Net
 			}
 		}
 
+        /*
 		public int BytesPerSecondReceived { 
 			get {
 				throw new NotImplementedException ();
@@ -979,6 +986,7 @@ namespace Microsoft.Xna.Framework.Net
 				throw new NotImplementedException ();
 			}
 		}
+        */
 
 		public NetworkGamer Host { 
 			get {

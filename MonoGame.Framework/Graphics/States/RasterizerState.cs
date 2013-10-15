@@ -63,16 +63,19 @@ namespace Microsoft.Xna.Framework.Graphics
 #if!PORTABLE
 			_cullClockwise = new Utilities.ObjectFactoryWithReset<RasterizerState>(() => new RasterizerState
             {
+                Name = "RasterizerState.CullClockwise",
 				CullMode = CullMode.CullClockwiseFace
 			});
 
 			_cullCounterClockwise = new Utilities.ObjectFactoryWithReset<RasterizerState>(() => new RasterizerState
             {
+                Name = "RasterizerState.CullCounterClockwise",
 				CullMode = CullMode.CullCounterClockwiseFace
 			});
 
 			_cullNone = new Utilities.ObjectFactoryWithReset<RasterizerState>(() => new RasterizerState
             {
+                Name = "RasterizerState.CullNone",
 				CullMode = CullMode.None
 			});
 #endif

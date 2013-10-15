@@ -55,9 +55,10 @@
     <None Include="NuGetPackage.ps1" />
     <None Include="NuGetSetup.ps1" />
     <None Include="NuGet.config" />
-    <None Include="NuGet.exe" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="NuGet.exe" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="..\MonoGame.Framework\bin\Portable\Release\MonoGame.Framework.dll">
       <Link>lib\portable-net4+sl4+wp7+win8\MonoGame.Framework.dll</Link>
