@@ -425,9 +425,24 @@ namespace Microsoft.Xna.Framework.Input.Touch
                 // Process the pending gesture events.
                 while (_gestureEvents.Count > 0)
                 {
+					int count = _gestureEvents.Count;
+
                     var stateChanged = RefreshState(true, _gestureState, _gestureEvents);
                     UpdateGestures(stateChanged);
-                }
+                    //DRC My Kludge: added this code to prevent infinite loop when gesture events don't get processed.
+                    //DRC Even with this, clicks are more like drags, and sometimes game stops responding to gestures.
+                    if (count == _gestureEvents.Count) {
+                        TouchLocationState unprocdState = _gestureEvents[0].State;
+                        Debug.WriteLine("\nTouchPanel.IsGestureAvailable: *** Force-Removed Unprocessed \"" + unprocdState + "\" Gesture Event ***\n" +
+                            "PinchStarted: " + _pinchGestureStarted + ", DragStarted: " + _dragGestureStarted);
+
+                        if (_dragGestureStarted == GestureType.HorizontalDrag && unprocdState == TouchLocationState.Moved) {
+                            Debug.WriteLine("Letting this one go because Moved while Horizontal Drag Started - will Remove when Released");
+                        }
+                        else
+                            _gestureEvents.RemoveAt(0);
+                    }
+				}
 
                 return GestureList.Count > 0;				
             }
