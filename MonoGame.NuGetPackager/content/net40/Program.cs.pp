@@ -6,7 +6,6 @@ using System.Linq;
 
 namespace $rootnamespace$
 {
-#if WINDOWS || LINUX
     /// <summary>
     /// The main class.
     /// </summary>
@@ -22,5 +21,4 @@ namespace $rootnamespace$
                 game.Run();
         }
     }
-#endif
 }

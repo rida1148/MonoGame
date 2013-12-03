@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
-        <id>MonoGame</id>
+        <id>MonoGame.Binaries</id>
         <version>3.1.0-alpha</version>
-        <title>MonoGame</title>
+        <title>MonoGame.Binaries</title>
         <authors>Simon-Darkside</authors>
         <owners>MonoGameTeam</owners>
         <licenseUrl>http://opensource.org/licenses/MS-PL</licenseUrl>
@@ -20,12 +20,12 @@
     <files>
         <file src="bin\Release\build\net40\Lidgren.Network.dll" target="build\net40\Lidgren.Network.dll" />
         <file src="bin\Release\build\net40\MonoGame.Framework.dll" target="build\net40\MonoGame.Framework.dll" />
-        <file src="build\net40\MonoGame.targets" target="build\net40\MonoGame.targets" />
+        <file src="build\net40\MonoGame.targets" target="build\net40\MonoGame.Binaries.targets" />
         <file src="bin\Release\build\net40\OpenTK.dll" target="build\net40\OpenTK.dll" />
         <file src="bin\Release\build\net40\Tao.Sdl.dll" target="build\net40\Tao.Sdl.dll" />
         <file src="bin\Release\build\netcore\MonoGame.Framework.dll" target="build\netcore\MonoGame.Framework.dll" />
         <file src="bin\Release\build\netcore\MonoGame.Framework.pri" target="build\netcore\MonoGame.Framework.pri" />
-        <file src="build\netcore\MonoGame.targets" target="build\netcore\MonoGame.targets" />
+        <file src="build\netcore\MonoGame.targets" target="build\netcore\MonoGame.Binaries.targets" />
         <file src="bin\Release\build\netcore\SharpDX.Direct2D1.dll" target="build\netcore\SharpDX.Direct2D1.dll" />
         <file src="bin\Release\build\netcore\SharpDX.Direct3D11.dll" target="build\netcore\SharpDX.Direct3D11.dll" />
         <file src="bin\Release\build\netcore\SharpDX.dll" target="build\netcore\SharpDX.dll" />
@@ -61,17 +61,6 @@
         <file src="bin\Release\build\wp8\x86\SharpDX.XAudio2.dll" target="build\wp8\x86\SharpDX.XAudio2.dll" />
         <file src="bin\Release\build\wp8\x86\SharpDX.XAudio2.xml" target="build\wp8\x86\SharpDX.XAudio2.xml" />
         <file src="bin\Release\build\wp8\x86\SharpDX.xml" target="build\wp8\x86\SharpDX.xml" />
-        <file src="build\wp8\MonoGame.targets" target="build\wp8\MonoGame.targets" />
-        <file src="content\net40\Game1.cs.pp" target="content\net40\Game1.cs.pp" />
-        <file src="content\net40\Program.cs.pp" target="content\net40\Program.cs.pp" />
-        <file src="bin\Release\content\net40\SDL.dll" target="content\net40\SDL.dll" />
-        <file src="content\netcore\App.xaml.cs.pp" target="content\netcore\App.xaml.cs.pp" />
-        <file src="content\netcore\App.xaml.pp" target="content\netcore\App.xaml.pp" />
-        <file src="content\netcore\Game1.cs.pp" target="content\netcore\Game1.cs.pp" />
-        <file src="content\netcore\GamePage.xaml.cs.pp" target="content\netcore\GamePage.xaml.cs.pp" />
-        <file src="content\netcore\GamePage.xaml.pp" target="content\netcore\GamePage.xaml.pp" />
-        <file src="content\wp8\Game1.cs.pp" target="content\wp8\Game1.cs.pp" />
-        <file src="content\wp8\GamePage.xaml.cs.pp" target="content\wp8\GamePage.xaml.cs.pp" />
-        <file src="content\wp8\GamePage.xaml.pp" target="content\wp8\GamePage.xaml.pp" />
+        <file src="build\wp8\MonoGame.targets" target="build\wp8\MonoGame.Binaries.targets" />
     </files>
 </package>

@@ -13,6 +13,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.WindowsP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.NuGetPackager", "MonoGame.NuGetPackager\MonoGame.NuGetPackager.csproj", "{0451BAEF-DF2E-4B98-8644-94EE9415E389}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8ED5FA5F-3FA9-4D6E-99F2-277779708270}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,7 +50,6 @@ Global
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|ARM.ActiveCfg = Release|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|ARM.Build.0 = Release|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|iPhone.ActiveCfg = Release|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -84,12 +90,11 @@ Global
 		{0518563C-ACCA-4A14-8C5D-DDBE93E2605F}.Debug|x86.Build.0 = Debug|x86
 		{0518563C-ACCA-4A14-8C5D-DDBE93E2605F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0518563C-ACCA-4A14-8C5D-DDBE93E2605F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0518563C-ACCA-4A14-8C5D-DDBE93E2605F}.Release|ARM.ActiveCfg = Release|ARM
-		{0518563C-ACCA-4A14-8C5D-DDBE93E2605F}.Release|ARM.Build.0 = Release|ARM
+		{0518563C-ACCA-4A14-8C5D-DDBE93E2605F}.Release|ARM.ActiveCfg = Release|Any CPU
 		{0518563C-ACCA-4A14-8C5D-DDBE93E2605F}.Release|iPhone.ActiveCfg = Release|Any CPU
 		{0518563C-ACCA-4A14-8C5D-DDBE93E2605F}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{0518563C-ACCA-4A14-8C5D-DDBE93E2605F}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{0518563C-ACCA-4A14-8C5D-DDBE93E2605F}.Release|Mixed Platforms.Build.0 = Release|x86
+		{0518563C-ACCA-4A14-8C5D-DDBE93E2605F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{0518563C-ACCA-4A14-8C5D-DDBE93E2605F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{0518563C-ACCA-4A14-8C5D-DDBE93E2605F}.Release|x64.ActiveCfg = Release|x64
 		{0518563C-ACCA-4A14-8C5D-DDBE93E2605F}.Release|x64.Build.0 = Release|x64
 		{0518563C-ACCA-4A14-8C5D-DDBE93E2605F}.Release|x86.ActiveCfg = Release|x86
@@ -107,11 +112,10 @@ Global
 		{77EBD3FC-0D63-4FAB-8DB9-29B3528184B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77EBD3FC-0D63-4FAB-8DB9-29B3528184B3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{77EBD3FC-0D63-4FAB-8DB9-29B3528184B3}.Release|ARM.ActiveCfg = Release|Any CPU
-		{77EBD3FC-0D63-4FAB-8DB9-29B3528184B3}.Release|ARM.Build.0 = Release|Any CPU
 		{77EBD3FC-0D63-4FAB-8DB9-29B3528184B3}.Release|iPhone.ActiveCfg = Release|Any CPU
 		{77EBD3FC-0D63-4FAB-8DB9-29B3528184B3}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{77EBD3FC-0D63-4FAB-8DB9-29B3528184B3}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{77EBD3FC-0D63-4FAB-8DB9-29B3528184B3}.Release|Mixed Platforms.Build.0 = Release|x86
+		{77EBD3FC-0D63-4FAB-8DB9-29B3528184B3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{77EBD3FC-0D63-4FAB-8DB9-29B3528184B3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{77EBD3FC-0D63-4FAB-8DB9-29B3528184B3}.Release|x64.ActiveCfg = Release|Any CPU
 		{77EBD3FC-0D63-4FAB-8DB9-29B3528184B3}.Release|x64.Build.0 = Release|Any CPU
 		{77EBD3FC-0D63-4FAB-8DB9-29B3528184B3}.Release|x86.ActiveCfg = Release|x86
@@ -152,7 +156,6 @@ Global
 		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Release|iPhone.ActiveCfg = Release|Any CPU
 		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Release|x64.ActiveCfg = Release|Any CPU
 		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
