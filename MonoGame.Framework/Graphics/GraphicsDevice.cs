@@ -1793,6 +1793,8 @@ namespace Microsoft.Xna.Framework.Graphics
 #elif PSM
                 var renderTarget = (RenderTarget2D)_currentRenderTargetBindings[0].RenderTarget;
                 _graphics.SetFrameBuffer(renderTarget._frameBuffer);
+#elif PORTABLE
+                var renderTarget = (RenderTarget2D)_currentRenderTargetBindings[0].RenderTarget;
 #endif
 
                 // We clear the render target if asked.
