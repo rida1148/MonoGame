@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>MonoGame-Portable</id>
-        <version>1.0.0</version>
+        <version>3.1.1-Alpha</version>
         <title>MonoGame Portable</title>
         <authors>Simon-Darkside</authors>
         <owners>MonoGameTeam</owners>
@@ -17,7 +17,7 @@ MonoGame is an open source implementation of the Microsoft XNA 4.x Framework.
 
 This is a community project and not directly delivered from the MonoGame team</description>
         <summary>MonoGame Portable is a PCL supported version of the open source cross platform implementation of Microsoft's XNA 4.x Framework</summary>
-        <releaseNotes>Initial release of the Portable MonoGame solution
+        <releaseNotes>Updated in line with Dev Release 3rd December 2013
 
 Log issues and questions on the GitHub for for Portable Monogame
 https://github.com/DDReaper/MonoGame/tree/develop.portable</releaseNotes>
@@ -25,6 +25,6 @@ https://github.com/DDReaper/MonoGame/tree/develop.portable</releaseNotes>
         <language>en-US</language>
     </metadata>
     <files>
-        <file src="bin\Release\lib\portable-net4+sl4+wp7+win8\MonoGame.Framework.dll" target="lib\portable-net4+sl4+wp7+win8\MonoGame.Framework.dll" />
+        <file src="..\MonoGame.Framework\bin\Portable\Release\MonoGame.Framework.dll" target="lib\portable-net4+sl5+wp8+win8\MonoGame.Framework.dll" />
     </files>
 </package>
