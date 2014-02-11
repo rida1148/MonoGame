@@ -33,6 +33,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Android\AndroidCompatibility.cs" />
+    <Compile Include="Android\AndroidGameActivity.cs" />
+    <Compile Include="Android\AndroidGamePlatform.cs" />
+    <Compile Include="Android\AndroidGameWindow.cs" />
+    <Compile Include="Android\Devices\Sensors\Compass.cs" />
+    <Compile Include="Android\GamerServices\MonoGameGamerServicesHelper.cs" />
+    <Compile Include="Android\Input\GamePad.cs" />
+    <Compile Include="Android\Input\Touch\AndroidTouchEventManager.cs" />
+    <Compile Include="Android\IResumeManager.cs" />
+    <Compile Include="Android\Media\VideoPlayer.cs" />
+    <Compile Include="Android\OrientationListener.cs" />
+    <Compile Include="Android\ResumeManager.cs" />
+    <Compile Include="Android\ScreenReciever.cs" />
     <Compile Include="Audio\AudioCategory.cs" />
     <Compile Include="Audio\AudioChannels.cs" />
     <Compile Include="Audio\AudioEmitter.cs" />
@@ -323,6 +336,20 @@
     <Compile Include="Input\Touch\TouchLocationState.cs" />
     <Compile Include="Input\Touch\TouchPanel.cs" />
     <Compile Include="Input\Touch\TouchPanelCapabilities.cs" />
+    <Compile Include="iOS\Extender.cs" />
+    <Compile Include="iOS\GamerServices\KeyboardInputAsyncResult.cs" />
+    <Compile Include="iOS\GamerServices\KeyboardInputView.cs" />
+    <Compile Include="iOS\GamerServices\KeyboardInputViewController.cs" />
+    <Compile Include="iOS\GamerServices\TextFieldAlertView.cs" />
+    <Compile Include="iOS\iOSGamePlatform.cs" />
+    <Compile Include="iOS\iOSGameView.cs" />
+    <Compile Include="iOS\iOSGameViewController.cs" />
+    <Compile Include="iOS\iOSGameView_GLAbstraction.cs" />
+    <Compile Include="iOS\iOSGameView_Touch.cs" />
+    <Compile Include="iOS\iOSGameWindow.cs" />
+    <Compile Include="iOS\Net\MonoGamePeerPickerControllerDelegate.cs" />
+    <Compile Include="iOS\Net\MonoGameSessionDelegate.cs" />
+    <Compile Include="iOS\OrientationConverter.cs" />
     <Compile Include="IUpdateable.cs" />
     <Compile Include="LaunchParameters.cs" />
     <Compile Include="MathHelper.cs" />

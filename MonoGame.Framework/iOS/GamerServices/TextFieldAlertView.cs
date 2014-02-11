@@ -1,16 +1,23 @@
 using System;
 using System.Drawing;
-
+#if !PORTABLE
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+#endif
 
 namespace Microsoft.Xna.Framework.GamerServices
 {
     [CLSCompliant(false)]
-	public class TextFieldAlertView : UIAlertView
+#if !PORTABLE
+    public class TextFieldAlertView : UIAlertView
+#else
+    public class TextFieldAlertView 
+#endif
 	{
+#if !PORTABLE
 		private UITextField _tf = null;
-		private bool _secureTextEntry;
+#endif
+        private bool _secureTextEntry;
 		
 		private string _initEditValue;
 		private string _placeHolderValue;
@@ -18,9 +25,13 @@ namespace Microsoft.Xna.Framework.GamerServices
 		public TextFieldAlertView() : this(false) {}
 		
         [CLSCompliant(false)]
+#if !PORTABLE
 		public TextFieldAlertView(bool secureTextEntry, string title, string message, UIAlertViewDelegate alertViewDelegate, string cancelBtnTitle, params string[] otherButtons)
 			: base(title, message, alertViewDelegate, cancelBtnTitle, otherButtons)
-		{
+#else
+        public TextFieldAlertView(bool secureTextEntry, string title, string message, object alertViewDelegate, string cancelBtnTitle, params string[] otherButtons)
+#endif
+        {
 			InitializeControl(secureTextEntry);
 		}
 		
@@ -39,6 +50,7 @@ namespace Microsoft.Xna.Framework.GamerServices
 		private void InitializeControl(bool secureTextEntry)
 		{
 			_secureTextEntry = secureTextEntry;
+#if !PORTABLE
 			this.AddButton("Cancel");
 			this.AddButton("Ok");
 			
@@ -47,27 +59,35 @@ namespace Microsoft.Xna.Framework.GamerServices
 			
 			// add the text field to the alert view
 			this.AddSubview(_tf);
+#endif
 		}
 		
 		public string EnteredText 
 		{ 
 			get 
 			{ 
+#if !PORTABLE
 				return _tf.Text; 
-			} 
+#else
+                return null;
+#endif
+            } 
 		}
 		
 		public override void LayoutSubviews ()
 		{
+#if !PORTABLE
 			// layout the stock UIAlertView control
 			base.LayoutSubviews ();
 			
 			// We can only force it to become a First Responder after it has been added to the MainView.
 			_tf.BecomeFirstResponder();
-		}
+#endif
+            }
 
+#if !PORTABLE
 		private UITextField ComposeTextFieldControl(bool secureTextEntry)
-		{
+        {
 			UITextField textField = new UITextField (new System.Drawing.RectangleF(12f, 45f, 260f, 25f));
 			textField.BackgroundColor = UIColor.White;
 			textField.UserInteractionEnabled = true;
@@ -80,19 +100,26 @@ namespace Microsoft.Xna.Framework.GamerServices
 			textField.Placeholder = _placeHolderValue;
 			textField.BecomeFirstResponder();
 			return textField;
-		}
+#else
+        private object ComposeTextFieldControl(bool secureTextEntry)
+        {
+            return null;
+#endif	
+        }
 		
 		public override void Show ()
 		{
+#if !PORTABLE
 			base.Show ();
-			
+#endif			
 			// shift the contents of the alert view around to accomodate the extra text field
 			this.AdjustControlSize();
 		}
 		
 		private void AdjustControlSize()
 		{
-			float tfExtH = _tf.Frame.Size.Height + 16.0f;
+#if !PORTABLE
+            float tfExtH = _tf.Frame.Size.Height + 16.0f;
 			
 			RectangleF frame = new RectangleF(this.Frame.X, 
 			                                  this.Frame.Y - tfExtH/2,
@@ -110,6 +137,7 @@ namespace Microsoft.Xna.Framework.GamerServices
 					                            view.Frame.Size.Height);
 				}
 			}
+#endif
 		}
 	}
 }

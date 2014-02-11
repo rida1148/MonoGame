@@ -1,5 +1,7 @@
 using System.Linq;
+#if !PORTABLE
 using Android.OS;
+#endif
 
 namespace Microsoft.Xna.Framework
 {
@@ -26,7 +28,9 @@ namespace Microsoft.Xna.Framework
         {
             ScaleImageToPowerOf2 = true;
             ESVersion = ESVersions.v2_0;
-			FlipLandscape = Kindles.Contains(Build.Model);
+#if !PORTABLE
+            FlipLandscape = Kindles.Contains(Build.Model);
+#endif
         }
 
         public static bool ScaleImageToPowerOf2 { get; set; }
