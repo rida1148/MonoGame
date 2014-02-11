@@ -70,11 +70,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 #if !PSM
-#if !WINRT
 using System.Drawing;
-#endif
-#else
-using Sce.PlayStation.Core.Graphics;
 #endif
 using System.IO;
 using System.Reflection;
@@ -152,19 +148,25 @@ namespace Microsoft.Xna.Framework
 #endif
 
 #if MONOMAC || WINDOWS || LINUX
+            
             // Set the window title.
             // TODO: Get the title from the WindowsPhoneManifest.xml for WP7 projects.
             string windowTitle = string.Empty;
+
+            // When running unit tests this can return null.
             var assembly = Assembly.GetEntryAssembly();
+            if (assembly != null)
+            {
+                //Use the Title attribute of the Assembly if possible.
+                var assemblyTitleAtt = ((AssemblyTitleAttribute)AssemblyTitleAttribute.GetCustomAttribute(assembly, typeof(AssemblyTitleAttribute)));
+                if (assemblyTitleAtt != null)
+                    windowTitle = assemblyTitleAtt.Title;
 
-            //Use the Title attribute of the Assembly if possible.
-            var assemblyTitleAtt = ((AssemblyTitleAttribute)AssemblyTitleAttribute.GetCustomAttribute(assembly, typeof(AssemblyTitleAttribute)));
-            if (assemblyTitleAtt != null)
-                windowTitle = assemblyTitleAtt.Title;
+                // Otherwise, fallback to the Name of the assembly.
+                if (string.IsNullOrEmpty(windowTitle))
+                    windowTitle = assembly.GetName().Name;
+            }
 
-            // Otherwise, fallback to the Name of the assembly.
-            if (string.IsNullOrEmpty(windowTitle))
-                windowTitle = assembly.GetName().Name;
             Window.Title = windowTitle;
 #endif
         }
@@ -365,6 +367,7 @@ namespace Microsoft.Xna.Framework
             get { return Platform.Window; }
         }
 #else
+		[CLSCompliant(false)]
         public GameWindow Window
         {
             get { return Platform.Window; }
@@ -410,6 +413,7 @@ namespace Microsoft.Xna.Framework
         public void Exit()
         {
             Platform.Exit();
+			_suppressDraw = true;
         }
 
         public void ResetElapsedTime()
@@ -421,6 +425,7 @@ namespace Microsoft.Xna.Framework
 #endif
             _accumulatedElapsedTime = TimeSpan.Zero;
             _gameTime.ElapsedGameTime = TimeSpan.Zero;
+            _previousTicks = 0L;
         }
 
         public void SuppressDraw()
@@ -487,21 +492,25 @@ namespace Microsoft.Xna.Framework
 #if !PORTABLE
         private Stopwatch _gameTimer = Stopwatch.StartNew();
 #endif
+        private long _previousTicks = 0;
 
         public void Tick()
         {
-#if !PORTABLE
             // NOTE: This code is very sensitive and can break very badly
             // with even what looks like a safe change.  Be sure to test 
             // any change fully in both the fixed and variable timestep 
             // modes across multiple devices and platforms.
 
-        RetryTick:
+            // Can only be running slow if we are fixed timestep
+            var possibleToBeRunningSlowly = IsFixedTimeStep;
 
+        RetryTick:
+#if !PORTABLE
             // Advance the accumulated elapsed time.
-            _accumulatedElapsedTime += _gameTimer.Elapsed;
-            _gameTimer.Reset();
-            _gameTimer.Start();
+            var currentTicks = _gameTimer.Elapsed.Ticks;
+            _accumulatedElapsedTime += TimeSpan.FromTicks(currentTicks - _previousTicks);
+            _previousTicks = currentTicks;
+#endif
 
             // If we're in the fixed timestep mode and not enough time has elapsed
             // to perform an update we sleep off the the remaining time to save battery
@@ -510,16 +519,22 @@ namespace Microsoft.Xna.Framework
             {
                 var sleepTime = (int)(TargetElapsedTime - _accumulatedElapsedTime).TotalMilliseconds;
 
+                // If we have had to sleep, we shouldn't report being
+                // slow regardless of how long we actually sleep for.
+                possibleToBeRunningSlowly = false;
+
                 // NOTE: While sleep can be inaccurate in general it is 
                 // accurate enough for frame limiting purposes if some
                 // fluctuation is an acceptable result.
+
+#if !PORTABLE
 #if WINRT
                 Task.Delay(sleepTime).Wait();
 #else
                 System.Threading.Thread.Sleep(sleepTime);
 #endif
+#endif
                 goto RetryTick;
-
             }
 
             // Do not allow any update to take longer than our maximum.
@@ -528,14 +543,14 @@ namespace Microsoft.Xna.Framework
 
             // http://msdn.microsoft.com/en-us/library/microsoft.xna.framework.gametime.isrunningslowly.aspx
             // Calculate IsRunningSlowly for the fixed time step, but only when the accumulated time
-            // exceeds the target time.
+            // exceeds the target time, and we haven't slept.
+            _gameTime.IsRunningSlowly = (possibleToBeRunningSlowly &&
+                                        (_accumulatedElapsedTime > TargetElapsedTime));
 
             if (IsFixedTimeStep)
             {
                 _gameTime.ElapsedGameTime = TargetElapsedTime;
                 var stepCount = 0;
-
-                _gameTime.IsRunningSlowly = (_accumulatedElapsedTime > TargetElapsedTime);
 
                 // Perform as many full fixed length time steps as we can.
                 while (_accumulatedElapsedTime >= TargetElapsedTime)
@@ -557,8 +572,6 @@ namespace Microsoft.Xna.Framework
                 _gameTime.ElapsedGameTime = _accumulatedElapsedTime;
                 _gameTime.TotalGameTime += _accumulatedElapsedTime;
                 _accumulatedElapsedTime = TimeSpan.Zero;
-                // Always set the RunningSlowly flag to false here when we are in fast-as-possible mode.
-                _gameTime.IsRunningSlowly = false;
 
                 DoUpdate(_gameTime);
             }
@@ -570,7 +583,6 @@ namespace Microsoft.Xna.Framework
             {
                 DoDraw(_gameTime);
             }
-#endif
         }
 
         #endregion
@@ -598,15 +610,7 @@ namespace Microsoft.Xna.Framework
             // GameComponents in Components at the time Initialize() is called
             // are initialized.
             // http://msdn.microsoft.com/en-us/library/microsoft.xna.framework.game.initialize.aspx
-
-            // 1. Categorize components into IUpdateable and IDrawable lists.
-            // 2. Subscribe to Added/Removed events to keep the categorized
-            //    lists synced and to Initialize future components as they are
-            //    added.
-            // 3. Initialize all existing components
-            CategorizeComponents();
-            _components.ComponentAdded += Components_ComponentAdded;
-            _components.ComponentRemoved += Components_ComponentRemoved;
+            // Initialize all existing components
             InitializeExistingComponents();
 
             _graphicsDeviceService = (IGraphicsDeviceService)
@@ -663,6 +667,9 @@ namespace Microsoft.Xna.Framework
         private void Components_ComponentAdded(
             object sender, GameComponentCollectionEventArgs e)
         {
+            // Since we only subscribe to ComponentAdded after the graphics
+            // devices are set up, it is safe to just blindly call Initialize.
+            e.GameComponent.Initialize();
             CategorizeComponent(e.GameComponent);
         }
 
@@ -739,6 +746,15 @@ namespace Microsoft.Xna.Framework
             AssertNotDisposed();
             Platform.BeforeInitialize();
             Initialize();
+
+            // We need to do this after virtual Initialize(...) is called.
+            // 1. Categorize components into IUpdateable and IDrawable lists.
+            // 2. Subscribe to Added/Removed events to keep the categorized
+            //    lists synced and to Initialize future components as they are
+            //    added.            
+            CategorizeComponents();
+            _components.ComponentAdded += Components_ComponentAdded;
+            _components.ComponentRemoved += Components_ComponentRemoved;
         }
 
 		internal void DoExiting()
@@ -785,6 +801,8 @@ namespace Microsoft.Xna.Framework
         // NOTE: InitializeExistingComponents really should only be called once.
         //       Game.Initialize is the only method in a position to guarantee
         //       that no component will get a duplicate Initialize call.
+        //       Further calls to Initialize occur immediately in response to
+        //       Components.ComponentAdded.
         private void InitializeExistingComponents()
         {
             // TODO: Would be nice to get rid of this copy, but since it only

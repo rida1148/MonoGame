@@ -50,8 +50,8 @@ using SharpDX.XAudio2;
 
 namespace Microsoft.Xna.Framework.Content
 {
-    internal class SoundEffectReader : ContentTypeReader<SoundEffect>
-    {
+	internal class SoundEffectReader : ContentTypeReader<SoundEffect>
+	{
 #if ANDROID
         static string[] supportedExtensions = new string[] { ".wav", ".mp3", ".ogg", ".mid" };
 #else
@@ -63,9 +63,9 @@ namespace Microsoft.Xna.Framework.Content
             return Normalize(fileName, supportedExtensions);
         }
 
-        protected internal override SoundEffect Read(ContentReader input, SoundEffect existingInstance)
-        {
-            // NXB format for SoundEffect...
+		protected internal override SoundEffect Read(ContentReader input, SoundEffect existingInstance)
+		{         
+             // NXB format for SoundEffect...
             //            
             // Byte [format size]	Format	WAVEFORMATEX structure
             // UInt32	Data size	
@@ -85,12 +85,12 @@ namespace Microsoft.Xna.Framework.Content
             //  WORD  wBitsPerSample;   // byte[14] +2
             //  WORD  cbSize;           // byte[16] +2
             //} WAVEFORMATEX;
-
-            byte[] header = input.ReadBytes(input.ReadInt32());
-            byte[] data = input.ReadBytes(input.ReadInt32());
-            int loopStart = input.ReadInt32();
-            int loopLength = input.ReadInt32();
-            int num = input.ReadInt32();
+            
+			byte[] header = input.ReadBytes(input.ReadInt32());
+			byte[] data = input.ReadBytes(input.ReadInt32());
+			int loopStart = input.ReadInt32();
+			int loopLength = input.ReadInt32();
+			input.ReadInt32();
 
 #if DIRECTX            
             var count = data.Length;
@@ -114,6 +114,10 @@ namespace Microsoft.Xna.Framework.Content
                 Name = input.AssetName,
             };
 #else
+            if(loopStart == loopLength) 
+            {
+                // do nothing. just killing the warning for non-DirectX path 
+            }
             if (header[0] == 2 && header[1] == 0)
             {
                 // We've found MSADPCM data! Let's decode it here.
@@ -124,23 +128,23 @@ namespace Microsoft.Xna.Framework.Content
                         byte[] newData = MSADPCMToPCM.MSADPCM_TO_PCM(
                             reader,
                             header[2],
-                            (short)((header[12] / header[2]) - 22)
+                            (short) ((header[12] / header[2]) - 22)
                         );
                         data = newData;
                     }
                 }
-
+                
                 // This is PCM data now!
                 header[0] = 1;
             }
-
+            
             int sampleRate = (
                 (header[4]) +
                 (header[5] << 8) +
                 (header[6] << 16) +
                 (header[7] << 24)
             );
-
+            
             return new SoundEffect(
                 input.AssetName,
                 data,
@@ -148,6 +152,6 @@ namespace Microsoft.Xna.Framework.Content
                 (header[2] == 2) ? AudioChannels.Stereo : AudioChannels.Mono
             );
 #endif
-        }
-    }
+		}
+	}
 }
