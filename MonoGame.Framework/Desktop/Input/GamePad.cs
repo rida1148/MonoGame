@@ -42,7 +42,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+#if !PORTABLE
 using Tao.Sdl;
+#endif
 
 namespace Microsoft.Xna.Framework.Input
 {
@@ -69,17 +71,23 @@ namespace Microsoft.Xna.Framework.Input
 		{
 			Init();
 			if (!sdl) return;
-#if DEBUG
+#if DEBUG && !PORTABLE
 			Console.WriteLine("Number of joysticks: " + Sdl.SDL_NumJoysticks());
 #endif			
 			// Limit to the first 4 sticks to avoid crashes
+#if PORTABLE
+            int numSticks = 0;
+#else
 			int numSticks = Math.Min (4,Sdl.SDL_NumJoysticks());
-			for (int x = 0; x < numSticks; x++)
+#endif
+            for (int x = 0; x < numSticks; x++)
 			{
-
+#if PORTABLE
+                PadConfig pc = new PadConfig("", 0);
+#else
 				PadConfig pc = new PadConfig(Sdl.SDL_JoystickName(x), x);
 				devices[x] = Sdl.SDL_JoystickOpen(pc.Index);
-
+#endif
 				pc.Button_A.ID = 0;
 				pc.Button_A.Type = InputType.Button;
 
@@ -166,7 +174,7 @@ namespace Microsoft.Xna.Framework.Input
 				//pc.BigButton.ID = 8;
 				//pc.BigButton.Type = InputType.Button;
 
-#if DEBUG
+#if DEBUG && !PORTABLE
 				int numbuttons = Sdl.SDL_JoystickNumButtons(devices[x]);
 				Console.WriteLine("Number of buttons for joystick: " + x + " - " + numbuttons);
 
@@ -216,11 +224,13 @@ namespace Microsoft.Xna.Framework.Input
         	for (int i = 0; i < 4; i++)
             {
         		PadConfig pc = settings[i];
+#if !PORTABLE
         		if (pc != null)
                 {
         			devices[i] = Sdl.SDL_JoystickOpen (pc.Index);
 			    }
-		    }
+#endif
+            }
 
 
         }
@@ -405,8 +415,10 @@ namespace Microsoft.Xna.Framework.Input
         public static GamePadState GetState(PlayerIndex playerIndex, GamePadDeadZone deadZoneMode)
         {
             PrepSettings();
+#if !PORTABLE
             if (sdl)
 				Sdl.SDL_JoystickUpdate();
+#endif
             return ReadState(playerIndex, deadZoneMode);
         }
         //

@@ -33,19 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Android\AndroidCompatibility.cs" />
-    <Compile Include="Android\AndroidGameActivity.cs" />
-    <Compile Include="Android\AndroidGamePlatform.cs" />
-    <Compile Include="Android\AndroidGameWindow.cs" />
-    <Compile Include="Android\Devices\Sensors\Compass.cs" />
-    <Compile Include="Android\GamerServices\MonoGameGamerServicesHelper.cs" />
-    <Compile Include="Android\Input\GamePad.cs" />
-    <Compile Include="Android\Input\Touch\AndroidTouchEventManager.cs" />
-    <Compile Include="Android\IResumeManager.cs" />
-    <Compile Include="Android\Media\VideoPlayer.cs" />
-    <Compile Include="Android\OrientationListener.cs" />
-    <Compile Include="Android\ResumeManager.cs" />
-    <Compile Include="Android\ScreenReciever.cs" />
     <Compile Include="Audio\AudioCategory.cs" />
     <Compile Include="Audio\AudioChannels.cs" />
     <Compile Include="Audio\AudioEmitter.cs" />
@@ -140,6 +127,15 @@
     <Compile Include="CurveKeyCollection.cs" />
     <Compile Include="CurveLoopType.cs" />
     <Compile Include="CurveTangent.cs" />
+    <Compile Include="Desktop\Input\Axis.cs" />
+    <Compile Include="Desktop\Input\Capabilities.cs" />
+    <Compile Include="Desktop\Input\DPad.cs" />
+    <Compile Include="Desktop\Input\GamePad.cs" />
+    <Compile Include="Desktop\Input\Input.cs" />
+    <Compile Include="Desktop\Input\Joystick.cs" />
+    <Compile Include="Desktop\Input\PadConfig.cs" />
+    <Compile Include="Desktop\Input\Settings.cs" />
+    <Compile Include="Desktop\Input\Stick.cs" />
     <Compile Include="Devices\Sensors\Accelerometer.cs" />
     <Compile Include="DisplayOrientation.cs" />
     <Compile Include="DrawableGameComponent.cs" />
@@ -336,20 +332,7 @@
     <Compile Include="Input\Touch\TouchLocationState.cs" />
     <Compile Include="Input\Touch\TouchPanel.cs" />
     <Compile Include="Input\Touch\TouchPanelCapabilities.cs" />
-    <Compile Include="iOS\Extender.cs" />
-    <Compile Include="iOS\GamerServices\KeyboardInputAsyncResult.cs" />
-    <Compile Include="iOS\GamerServices\KeyboardInputView.cs" />
-    <Compile Include="iOS\GamerServices\KeyboardInputViewController.cs" />
-    <Compile Include="iOS\GamerServices\TextFieldAlertView.cs" />
-    <Compile Include="iOS\iOSGamePlatform.cs" />
-    <Compile Include="iOS\iOSGameView.cs" />
-    <Compile Include="iOS\iOSGameViewController.cs" />
-    <Compile Include="iOS\iOSGameView_GLAbstraction.cs" />
-    <Compile Include="iOS\iOSGameView_Touch.cs" />
-    <Compile Include="iOS\iOSGameWindow.cs" />
-    <Compile Include="iOS\Net\MonoGamePeerPickerControllerDelegate.cs" />
-    <Compile Include="iOS\Net\MonoGameSessionDelegate.cs" />
-    <Compile Include="iOS\OrientationConverter.cs" />
+    <Compile Include="Input\Touch\TouchPanelState.cs" />
     <Compile Include="IUpdateable.cs" />
     <Compile Include="LaunchParameters.cs" />
     <Compile Include="MathHelper.cs" />

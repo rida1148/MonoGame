@@ -48,11 +48,13 @@ namespace Microsoft.Xna.Framework.Input
     {
         public Capabilities(IntPtr device)
         {
+#if !PORTABLE
             // TODO: Complete member initialization            
             this.NumberOfAxis = Tao.Sdl.Sdl.SDL_JoystickNumAxes(device);
             this.NumberOfButtons = Tao.Sdl.Sdl.SDL_JoystickNumButtons(device);
             this.NumberOfPovHats = Tao.Sdl.Sdl.SDL_JoystickNumHats(device);
-        }
+#endif
+            }
 
 
         public int NumberOfAxis { get; private set; }

@@ -22,6 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Windows\Debug\</OutputPath>
+    <IntermediateOutputPath>obj\Windows\Debug\</IntermediateOutputPath>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugSymbols>true</DebugSymbols>
@@ -37,6 +38,7 @@
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Windows\Release\</OutputPath>
+    <IntermediateOutputPath>obj\Windows\Release\</IntermediateOutputPath>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <RegisterForComInterop>False</RegisterForComInterop>
@@ -174,6 +176,7 @@
     <Compile Include="Input\GamePadDeadZone.cs" />
     <Compile Include="Input\Keyboard.cs" />
     <Compile Include="Input\MouseState.cs" />
+    <Compile Include="Input\Touch\TouchPanelState.cs" />
     <Compile Include="LaunchParameters.cs" />
     <Compile Include="Media\MediaPlayer.cs" />
     <Compile Include="Media\VideoSoundtrackType.cs" />

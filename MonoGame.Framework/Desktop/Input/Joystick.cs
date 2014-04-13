@@ -41,7 +41,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+#if !PORTABLE
 using Tao.Sdl;
+#endif
 
 namespace Microsoft.Xna.Framework.Input
 {
@@ -56,6 +58,7 @@ namespace Microsoft.Xna.Framework.Input
 
         public Joystick(int id)
         {
+#if !PORTABLE
             // TODO: Complete member initialization
             this.id = id;
             this.device = Tao.Sdl.Sdl.SDL_JoystickOpen(id);
@@ -64,6 +67,7 @@ namespace Microsoft.Xna.Framework.Input
             this.Details = new Capabilities(this.device);
             this.Config = new PadConfig(this.Name, id);
             this.SetDefaults(this.Details);
+#endif
         }
 
         private void SetDefaults(Capabilities capabilities)
@@ -100,15 +104,25 @@ namespace Microsoft.Xna.Framework.Input
 
         public static bool Init()
         {
+#if PORTABLE
+            return true;
+#else
             // only initialise the Joystick part of SDL
             return Sdl.SDL_Init(Sdl.SDL_INIT_JOYSTICK) == 0;
+#endif
         }
 
         public static List<Joystick> GrabJoysticks()
         {
+#if PORTABLE
+            int num = 0;
+#else
             int num = Tao.Sdl.Sdl.SDL_NumJoysticks();
+#endif
             List<Joystick> list = new List<Joystick>();
+#if !PORTABLE
             Tao.Sdl.Sdl.SDL_JoystickEventState(0);
+#endif
             for (int i = 0; i < num; i++)
             {
                 list.Add(new Joystick(i));

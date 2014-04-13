@@ -57,6 +57,7 @@ namespace Microsoft.Xna.Framework.Input
         {
             switch (Type)
             {
+#if !PORTABLE
                 case InputType.Axis:
                     var axis = Tao.Sdl.Sdl.SDL_JoystickGetAxis(device, this.ID);
                     if (this.Negative)
@@ -73,6 +74,7 @@ namespace Microsoft.Xna.Framework.Input
                     // Cast the type as an int to get the correct sdl mask for the hat
                     return (((Tao.Sdl.Sdl.SDL_JoystickGetHat(device, this.ID) & (int)Type) > 0) ^ this.Negative);
                 case InputType.None:
+#endif
                 default:
                     return false;
             }
@@ -81,6 +83,7 @@ namespace Microsoft.Xna.Framework.Input
         internal float ReadFloat(IntPtr device)
         {
             float mask = this.Negative ? -1f : 1f;
+#if !PORTABLE
             switch (this.Type)
             {
                 case InputType.Axis:
@@ -94,6 +97,7 @@ namespace Microsoft.Xna.Framework.Input
                 case InputType.PovRight:
                     return ((Tao.Sdl.Sdl.SDL_JoystickGetHat(device, this.ID) & (int)Type) * mask);
             }
+#endif
             return 0f;
 
         }

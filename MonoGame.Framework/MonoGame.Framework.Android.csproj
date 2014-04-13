@@ -23,6 +23,7 @@
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\Android\Debug\</OutputPath>
+    <IntermediateOutputPath>obj\Android\Debug\</IntermediateOutputPath>
     <DefineConstants>TRACE;DEBUG;ANDROID;GLES;GLSL;OPENGL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -34,6 +35,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>True</Optimize>
     <OutputPath>bin\Android\Release\</OutputPath>
+    <IntermediateOutputPath>obj\Android\Release\</IntermediateOutputPath>
     <DefineConstants>TRACE;ANDROID;GLES;OPENGL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -301,6 +303,7 @@
     <Compile Include="Input\Touch\TouchLocation.cs" />
     <Compile Include="Input\Touch\TouchLocationState.cs" />
     <Compile Include="Input\Touch\TouchPanel.cs" />
+    <Compile Include="Input\Touch\TouchPanelState.cs" />
     <Compile Include="Input\Touch\TouchPanelCapabilities.cs" />
     <Compile Include="Storage\StorageContainer.cs" />
     <Compile Include="Storage\StorageDevice.cs" />
